@@ -17,6 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Main2Activity" />
+    <activity android:name=".recyclerview.recyclerview_activity" />
+
     </application>
 
 </manifest>

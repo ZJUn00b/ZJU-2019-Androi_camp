@@ -13,25 +13,28 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.percy.helloworld.recyclerview.recyclerview_activity;
 import java.text.BreakIterator;
 
 public class MainActivity extends AppCompatActivity {
     private SeekBar testSeekBar;
     private TextView text2;
+    public String tag = "mainactivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //log检测
-        Log.d("mainactivity","init");
+
         super.onCreate(savedInstanceState);
+        Log.i(tag,"onCreate");
         setContentView(R.layout.activity_main);
+        Log.i(tag,"setContentView");
         // 获取界面组件
         //根据ID值取得SeekBar对象和TextView对象
         testSeekBar = (SeekBar)findViewById(R.id.seekBar);
         text2 = (TextView)findViewById(R.id.textView2);
-
         testSeekBar.setMax(100); //设置进度条的最大值是100
         testSeekBar.setProgress(30); //设置初始位置
+        Log.i(tag,"根据ID值取得SeekBar对象和TextView对象");
         //获取工具条
         android.support.v7.widget.Toolbar toolbar1 = findViewById(R.id.toolbar);
         toolbar1.setLogo(R.mipmap.ic_launcher);
@@ -41,7 +44,10 @@ public class MainActivity extends AppCompatActivity {
         bt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this,"you have clicked Button1",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this,"go to list view",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, recyclerview_activity.class);
+                startActivity(intent);
+                MainActivity.this.finish();
             }
         });
         //按钮2
@@ -68,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         });
         //为seekbar写监听事件
         testSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+
             //在进度开始改变时执行
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {

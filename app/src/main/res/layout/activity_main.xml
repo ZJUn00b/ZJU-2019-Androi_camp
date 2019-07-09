@@ -58,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:text="Show Message" />
+            android:text="点击按钮进入列表视图" />
     </LinearLayout>
 
     <TextView

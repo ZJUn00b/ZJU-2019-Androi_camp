@@ -1,7 +1,8 @@
 # ZJU-2019-Android_camp HW2
 在本次作业中我完成了RcyclerView控件的添加，在初始界面中可以通过点击`点击按钮进入列表视图`按钮来进入显示RcyclerView控件的页面，会弹出消息`go to list view`。
-
+<html>
 <img scr= "https://github.com/ZJUn00b/ZJU-2019-Android_camp/blob/hw2/app/src/main/res/pics/main.jpg" width = "100" alt = "初始界面"/>
+ </html>
 
 进入后的页面视图如下：
 ![avatar](https://github.com/ZJUn00b/ZJU-2019-Android_camp/blob/hw2/app/src/main/res/pics/enter.jpg)

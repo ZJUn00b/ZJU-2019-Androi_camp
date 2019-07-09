@@ -9,4 +9,5 @@
     <color name="No_Others">#99ffffff</color>
     <color name="Title">#e6ffffff</color>
     <color name="HotValue">#7fffffff</color>
+    <color name="button">#55DFF0</color>
 </resources>

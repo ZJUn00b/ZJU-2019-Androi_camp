@@ -13,51 +13,69 @@
         android:gravity="center_vertical"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
-        android:background="@color/colorPrimary">
+        android:background="@color/background">
 
         <Button
             android:id="@+id/bt_insert"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="插入"/>
+            android:text="插入"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp"/>
 
         <Button
             android:id="@+id/bt_insert_range"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="批量增"/>
+            android:text="批量增"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp"/>
 
         <Button
             android:id="@+id/bt_delete"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="删除"/>
+            android:text="删除"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp"/>
 
         <Button
             android:id="@+id/bt_delete_range"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="批量删"/>
+            android:text="批量删"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp"/>
 
         <Button
             android:id="@+id/bt_change"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="修改"/>
+            android:text="修改"            android:textColor="@color/colorAccent"
+            android:textSize="13sp"
+            />
 
         <Button
             android:id="@+id/bt_back"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="返回"/>
+            android:text="返回"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp"/>
 
     </LinearLayout>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="225dp"
+        android:background="@color/background"
+        android:src="@drawable/head"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

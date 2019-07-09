@@ -8,32 +8,38 @@
     android:background="@color/background">
     <LinearLayout android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="15dp"
         android:layout_weight="1"
         android:orientation="horizontal">
     <!-- 设置为斜体加粗-->
-    <TextView
-        android:id="@+id/No"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="15dp"
-        android:text="1."
-        android:textColor="@color/No_Top3"
-        android:textSize="15sp"
-        android:textStyle="bold|italic" />
+        <TextView
+            android:id="@+id/No"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="2dp"
+            android:text="1."
+            android:textColor="@color/No_Top3"
+            android:textSize="15sp"
+            android:textStyle="bold|italic" />
 
     <TextView
         android:id="@+id/Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="10dp"
         android:text="敬礼我的超级英雄"
         android:textColor="@color/Title"
         android:textSize="15sp"
         />
 
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/image2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/newsymbol" />
     </LinearLayout>
     <TextView
     android:id="@+id/HotValue"
@@ -41,7 +47,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
         android:layout_marginRight="10dp"
-    android:text="548583"
+    android:text="more548583"
     android:textColor="@color/HotValue"
     android:textSize="13sp" />
 </LinearLayout>

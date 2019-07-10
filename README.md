@@ -5,3 +5,5 @@
 Day1 hw in branch `master`
 
 Day2 hw in branch `hw2`
+
+Day3 hw in branch `hw3`

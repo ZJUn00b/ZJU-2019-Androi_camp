@@ -1,6 +1,9 @@
 package com.example.chapter3.homework;
 
+import android.animation.ValueAnimator;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -38,12 +41,23 @@ public class Ch3Ex1Activity extends AppCompatActivity {
         });
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            //progress的值是从0到100
+           public void onProgressChanged(final SeekBar seekBar, final int progress, boolean fromUser) {
                 // TODO ex1-2: 这里应该调用哪个函数呢
                 // 提示1：可以参考 https://airbnb.io/lottie/#/android?id=custom-animators
                 // 提示2：SeekBar 的文档可以把鼠标放在 OnProgressChanged 中间，并点击 F1 查看，
                 // 或者到官网查询 https://developer.android.google.cn/reference/android/widget/SeekBar.OnSeekBarChangeListener.html#onProgressChanged(android.widget.SeekBar,%20int,%20boolean
+                ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
+                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        animationView.setProgress((seekBar.getProgress() / 100f));
+                    }
+                });
+                animator.start();
             }
 
             @Override

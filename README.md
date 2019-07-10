@@ -8,7 +8,7 @@
 ### 列表页面
 进入后的页面视图如下：
 
-![recycler activity](https://github.com/ZJUn00b/ZJU-2019-Android_camp/blob/hw2/app/src/main/res/pics/enter.jpg)
+![recycler activity](https://github.com/ZJUn00b/ZJU-2019-Android_camp/blob/hw2/app/src/main/res/pics/1main.jpg)
 
 在本页面中我实现了文本项的列表展示（包括分割线）和滑动操作，并参考示例代码，实现`插入`、`批量增`、`删除`、`批量删`、`修改`并留有一个`返回`案件用于返回应用的初始界面。
 

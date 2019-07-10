@@ -18,5 +18,5 @@
 #### 批量增后的效果
 ![recycler activity2](https://github.com/ZJUn00b/ZJU-2019-Android_camp/blob/hw2/app/src/main/res/pics/piliangzeng.jpg)
 
-其余操作效果可通过运行apk进行观察。
+其余操作的效果可通过运行apk进行观察。
 

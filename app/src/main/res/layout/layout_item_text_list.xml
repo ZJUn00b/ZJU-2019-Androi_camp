@@ -3,7 +3,10 @@
 
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="48dp">
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,14 +18,14 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:orientation="vertical">
             <!-- 设置为斜体加粗-->
             <TextView
                 android:id="@+id/index"
-                android:layout_width="30dp"
+                android:layout_width="25dp"
                 android:layout_height="fill_parent"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 android:gravity="right|center"
                 android:text="1."
 
@@ -37,12 +40,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="15dp"
             android:text="敬礼我的超级英雄"
             android:textColor="@color/Title"
             android:textSize="15sp"
             />
-
+        <ImageView
+            android:id="@+id/image2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:srcCompat="@drawable/newsymbol"
+            app:layout_constraintTop_toBottomOf="@+id/image2"
+            android:layout_gravity="center_vertical"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp"/>
         <TextView
             android:id="@+id/HotValue"
             android:layout_width="wrap_content"

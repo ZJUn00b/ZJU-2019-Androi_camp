@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 一条item的布局-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:orientation="horizontal"
@@ -34,12 +36,15 @@
         android:textSize="15sp"
         />
 
-        <android.support.v7.widget.AppCompatImageView
+        <ImageView
             android:id="@+id/image2"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            app:srcCompat="@drawable/newsymbol"
+            app:layout_constraintTop_toBottomOf="@+id/image2"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/newsymbol" />
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp"/>
     </LinearLayout>
     <TextView
     android:id="@+id/HotValue"

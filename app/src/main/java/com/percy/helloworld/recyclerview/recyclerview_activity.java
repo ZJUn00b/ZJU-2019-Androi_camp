@@ -35,9 +35,11 @@ public class recyclerview_activity extends AppCompatActivity {
         mListView.setAdapter(mAdapter);
         mAdapter.setList(DataFactory.getData(30));
         mAdapter.notifyDataSetChanged();
+        //图片显示
         //ImageView imgView = (ImageView) this.findViewById(R.id.image2);
-       // final int[] imageItems = new int[] { R.drawable.head };
+        //final int[] imageItems = new int[] { R.drawable.newsymbol };
         //imgView.setImageResource(imageItems[0]);
+
         //添加自定义分割线
         DividerItemDecoration divider = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
         divider.setDrawable(ContextCompat.getDrawable(this,R.drawable.line));

@@ -1,3 +1,4 @@
+
 package com.bytedance.clockapplication.widget;
 
 import android.content.Context;
@@ -20,9 +21,8 @@ import java.util.Locale;
 public class Clock extends View {
 
     private final static String TAG = Clock.class.getSimpleName();
-
+    //表盘的角度大小为360
     private static final int FULL_ANGLE = 360;
-
     private static final int CUSTOM_ALPHA = 140;
     private static final int FULL_ALPHA = 255;
 
@@ -80,7 +80,12 @@ public class Clock extends View {
         int widthWithoutPadding = width - getPaddingLeft() - getPaddingRight();
         int heightWithoutPadding = height - getPaddingTop() - getPaddingBottom();
 
-        size = Math.min(widthWithoutPadding, heightWithoutPadding);
+        if (widthWithoutPadding > heightWithoutPadding) {
+            size = heightWithoutPadding;
+        } else {
+            size = widthWithoutPadding;
+        }
+
         setMeasuredDimension(size + getPaddingLeft() + getPaddingRight(), size + getPaddingTop() + getPaddingBottom());
     }
 
@@ -104,7 +109,7 @@ public class Clock extends View {
     protected void onDraw(final Canvas canvas) {
         super.onDraw(canvas);
 
-        mWidth = Math.min(getWidth(), getHeight());
+        mWidth = getHeight() > getWidth() ? getWidth() : getHeight();
 
         int halfWidth = mWidth / 2;
         mCenterX = halfWidth;
@@ -119,7 +124,7 @@ public class Clock extends View {
         } else {
             drawNumbers(canvas);
         }
-
+        postInvalidateDelayed(1000);
     }
 
     private void drawDegrees(Canvas canvas) {
@@ -152,13 +157,16 @@ public class Clock extends View {
         }
     }
 
+
+
+    //to do: homework part
     /**
      * @param canvas
      */
     private void drawNumbers(Canvas canvas) {
 
         TextPaint textPaint = new TextPaint();
-        textPaint.setTextSize(mWidth * 0.2f);
+        textPaint.setTextSize(mWidth * 0.18f);
         textPaint.setColor(numbersColor);
         textPaint.setColor(numbersColor);
         textPaint.setAntiAlias(true);
@@ -177,8 +185,7 @@ public class Clock extends View {
                 amPm == AM ? "AM" : "PM");
 
         SpannableStringBuilder spannableString = new SpannableStringBuilder(time);
-        spannableString.setSpan(new RelativeSizeSpan(0.3f), spannableString.toString().length() - 2, spannableString.toString().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // se superscript percent
-
+        spannableString.setSpan(new RelativeSizeSpan(0.3f), spannableString.toString().length() - 2, spannableString.toString().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         StaticLayout layout = new StaticLayout(spannableString, textPaint, canvas.getWidth(), Layout.Alignment.ALIGN_CENTER, 1, 1, true);
         canvas.translate(mCenterX - layout.getWidth() / 2f, mCenterY - layout.getHeight() / 2f);
         layout.draw(canvas);
@@ -192,8 +199,23 @@ public class Clock extends View {
     private void drawHoursValues(Canvas canvas) {
         // Default Color:
         // - hoursValuesColor
+        TextPaint textPaint = new TextPaint();
+        textPaint.setTextSize(80);
+        textPaint.setColor(hoursNeedleColor);
+        textPaint.setStyle(Paint.Style.FILL);
+        textPaint.setTextAlign(Paint.Align.CENTER);
 
-
+        Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();
+        float top = fontMetrics.top;
+        float bottom = fontMetrics.bottom;
+//考虑到最终效果将半径设为小一些
+        String[] time = {"12","01","02","03","04","05","06","07","08","09","10","11"};
+        for(int i = 0;i < FULL_ANGLE;i += 30){
+            int cx = (int) (mCenterX + 370 * Math.sin(Math.toRadians(i)));
+            int cy = (int) (mCenterX - 370 * Math.cos(Math.toRadians(i)));
+            int baseLineY = (int) (cy - top/2 - bottom/2);
+            canvas.drawText(time[i/30],cx,baseLineY,textPaint);
+        }
     }
 
     /**
@@ -207,7 +229,37 @@ public class Clock extends View {
         // - secondsNeedleColor
         // - hoursNeedleColor
         // - minutesNeedleColor
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR);
+        int minute = calendar.get(Calendar.MINUTE);
+        int second =  calendar.get(Calendar.SECOND);
 
+        Paint sNeedle = new Paint();
+        sNeedle.setColor(secondsNeedleColor);
+        sNeedle.setStyle(Paint.Style.FILL);
+        sNeedle.setStrokeWidth(6);
+        int sLength = 360;
+        int sEndX = (int) (mCenterX + sLength * Math.sin(Math.toRadians(second * 6)));
+        int sEndY = (int) (mCenterX - sLength * Math.cos(Math.toRadians(second * 6)));
+        canvas.drawLine(mCenterX,mCenterX,sEndX,sEndY,sNeedle);
+
+        Paint mNeedle = new Paint();
+        mNeedle.setColor(minutesNeedleColor);
+        mNeedle.setStyle(Paint.Style.FILL);
+        mNeedle.setStrokeWidth(8);
+        int mLength = 320;
+        int mEndX = (int) (mCenterX + mLength * Math.sin(Math.toRadians(minute * 6)));
+        int mEndY = (int) (mCenterX - mLength * Math.cos(Math.toRadians(minute * 6)));
+        canvas.drawLine(mCenterX,mCenterX,mEndX,mEndY,mNeedle);
+
+        Paint hNeedle = new Paint();
+        hNeedle.setColor(hoursNeedleColor);
+        hNeedle.setStyle(Paint.Style.FILL);
+        hNeedle.setStrokeWidth(12);
+        int hLength = 240;
+        int hEndX = (int) (mCenterX + hLength * Math.sin(Math.toRadians(hour * 30 + minute / 2)));
+        int hEndY = (int) (mCenterX - hLength * Math.cos(Math.toRadians(hour * 30 + minute / 2)));
+        canvas.drawLine(mCenterX,mCenterX,hEndX,hEndY,hNeedle);
     }
 
     /**
@@ -219,7 +271,16 @@ public class Clock extends View {
         // Default Color:
         // - centerInnerColor
         // - centerOuterColor
+        Paint mpaint1 = new Paint();
+        mpaint1.setColor(centerOuterColor);
+        mpaint1.setStyle(Paint.Style.STROKE);
+        mpaint1.setStrokeWidth(10);
+        canvas.drawCircle(mCenterX,mCenterX,20,mpaint1);
 
+        Paint mpaint2 = new Paint();
+        mpaint2.setColor(centerInnerColor);
+        mpaint2.setStyle(Paint.Style.FILL);
+        canvas.drawCircle(mCenterX,mCenterX,20,mpaint2);
     }
 
     public void setShowAnalog(boolean showAnalog) {
@@ -228,6 +289,7 @@ public class Clock extends View {
     }
 
     public boolean isShowAnalog() {
+
         return mShowAnalog;
     }
 

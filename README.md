@@ -10,7 +10,7 @@
 ### 完成效果
 竖屏模式下：
 
-![shuping1](https://github.com/ZJUn00b/ZJU-2019-Android_camp/tree/hw4/app/src/main/res/shortcut/1.jpg)
+![shuping1](./app/src/main/res/shortcut/1.jpg)
 
 ![shuping2](https://github.com/ZJUn00b/ZJU-2019-Android_camp/tree/hw4/app/src/main/res/shortcut/2.jpg)
 

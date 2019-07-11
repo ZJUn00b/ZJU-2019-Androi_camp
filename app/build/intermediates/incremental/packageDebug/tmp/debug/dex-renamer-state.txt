@@ -1,0 +1,4 @@
+#Tue Jul 09 22:07:01 CST 2019
+base.0=/Users/tonybright/Work/Chapter-4/Chapter4/Clock/app/build/intermediates/dex/debug/mergeDexDebug/out
+path.0=classes.dex
+renamed.0=classes.dex

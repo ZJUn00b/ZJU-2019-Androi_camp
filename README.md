@@ -12,10 +12,10 @@
 
 ![shuping1](./app/src/main/res/shortcut/1.jpg)
 
-![shuping2](https://github.com/ZJUn00b/ZJU-2019-Android_camp/tree/hw4/app/src/main/res/shortcut/2.jpg)
+![shuping2](./app/src/main/res/shortcut/2.jpg)
 
 横屏模式下：
 
-![hengping1](https://github.com/ZJUn00b/ZJU-2019-Android_camp/tree/hw4/app/src/main/res/shortcut/3.jpg)
+![hengping1](./app/src/main/res/shortcut/3.jpg)
 
-![hengping2](https://github.com/ZJUn00b/ZJU-2019-Android_camp/tree/hw4/app/src/main/res/shortcut/4.jpg)
+![hengping2](./app/src/main/res/shortcut/4.jpg)

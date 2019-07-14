@@ -7,7 +7,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface ICatService {
-    String HOST = "https://api.thecatapi.com/";
+    String BASE = "https://api.thecatapi.com/";
     String PATH = "v1/images/search";
 
     @GET(PATH)

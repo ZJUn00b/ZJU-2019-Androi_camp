@@ -80,12 +80,14 @@ public class MainActivity extends AppCompatActivity {
         {
             @Override
             protected String doInBackground(String... strings) {
-                return NetworkUtils.getResponseWithHttpURLConnection(ICatService.HOST + ICatService.PATH);
+                String URL = ICatService.BASE + ICatService.PATH;
+                return NetworkUtils.getResponseWithHttpURLConnection(URL);
             }
+            //onPostExecute过程在doInBackground之后进行调用，result的内容为doInBackground的返回值
             @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                tvOut.setText(s);
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+                tvOut.setText(result);
             }
         }.execute();
     }
@@ -97,30 +99,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    final String s;
+                    final String result;
+                    int the_first_par=0;
                     Cat cat = null;
                     Response<List<Cat>> response = getCatService().randomCat(1).execute();
-                    cat = response.body().get(0);
-                    if (cat != null)
-                    {
-                        s = cat.toString();
-                    }
-                    else
-                    {
-                        s = "Cat Null";
-                    }
-
+                    cat = response.body().get(the_first_par);
+                    if (cat != null) result = cat.toString();
+                    else result = "Cat breeds Null";
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            tvOut.setText(s);
+                            tvOut.setText(result);
                         }
                     });
-
                 } catch (IOException error) {
                     error.printStackTrace();
                 }
-
             }
         }.start();
     }
@@ -129,11 +123,12 @@ public class MainActivity extends AppCompatActivity {
         // TODO 6: Fix crash of CalledFromWrongThreadException
         new Thread() {
             @Override public void run() {
-                final String s = NetworkUtils.getResponseWithHttpURLConnection(ICatService.HOST + ICatService.PATH);
+                String URL = ICatService.BASE + ICatService.PATH;
+                final String result = NetworkUtils.getResponseWithHttpURLConnection(URL);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tvOut.setText(s);
+                        tvOut.setText(result);
                     }
                 });
 
@@ -145,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         // HttpURLConnection Async
         new Thread() {
             @Override public void run() {
-                final String s = NetworkUtils.getResponseWithHttpURLConnection(ICatService.HOST + ICatService.PATH);
+                final String s = NetworkUtils.getResponseWithHttpURLConnection(ICatService.BASE + ICatService.PATH);
                 try {
                     JSONArray cats = new JSONArray(s);
                     JSONObject cat = cats.getJSONObject(0);
@@ -193,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
     private ICatService getCatService() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(ICatService.HOST)
+                    .baseUrl(ICatService.BASE)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

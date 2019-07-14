@@ -28,8 +28,7 @@ public interface IMiniDouyinService {
     // TODO 7: Define IMiniDouyinService
     String BASE_URL = "http://test.androidcamp.bytedance.com/mini_douyin/invoke/";
     //GET方法
-    @GET("video")
-    Call<GetResponse> getVideos();
+
     //POST方法
     @Multipart
     @POST("video")
@@ -37,4 +36,6 @@ public interface IMiniDouyinService {
             @Query("student_id") String studentId,
             @Query("user_name") String userName,
             @Part MultipartBody.Part image, @Part MultipartBody.Part video);
+    @GET("video")
+    Call<GetResponse> getVideos();
 }

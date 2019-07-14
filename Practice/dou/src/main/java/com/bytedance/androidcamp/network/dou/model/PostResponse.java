@@ -9,16 +9,16 @@ public class PostResponse {
     //result包含互相关联的ID和NAME
     //1.
     @SerializedName("result") private Map<String,String> result;
+    //2.
+    @SerializedName("url") private String url;
+    //3.
+    @SerializedName("success") private Boolean success;
     //result
     public Map<String,String> getResult() {return result;}
     public void setResult(Map<String,String> result) {this.result = result;}
-    //2.
-    @SerializedName("url") private String url;
     //url
     public String getUrl() { return url; }
     public void setUrl(String url) { this.url = url; }
-    //3.
-    @SerializedName("success") private Boolean success;
     //success
     public Boolean getSuccess() { return success; }
     public void setSuccess(Boolean success) { this.success = success; }

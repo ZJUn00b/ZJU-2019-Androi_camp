@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.bytedance.androidcamp.network.dou.api.IMiniDouyinService;
 import com.bytedance.androidcamp.network.dou.model.GetResponse;
@@ -110,14 +111,22 @@ public class MainActivity extends AppCompatActivity {
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         public ImageView img;
+        public TextView t1,t2;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             img = itemView.findViewById(R.id.img);
+            t1 = itemView.findViewById(R.id.t1);//h
+            t2 = itemView.findViewById(R.id.t2);//w
+
         }
 
         public void bind(final Activity activity, final Video video) {
             ImageHelper.displayWebImage(video.getImageUrl(), img);
+            String text1 = video.getImage_h()+"";
+            String text2 = video.getImage_w()+"";
+            t1.setText(text1);
+            t2.setText(text2);
             img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -204,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
         MultipartBody.Part coverImagePart = getMultipartFromUri("cover_image", mSelectedImage);
         MultipartBody.Part videoPart = getMultipartFromUri("video", mSelectedVideo);
         // TODO 9: post video & update buttons
-        Call<PostResponse> call = getMiniDouyinService().postVideo("123456","Rain",coverImagePart,videoPart);
+        Call<PostResponse> call = getMiniDouyinService().postVideo("3170102492","hootch",coverImagePart,videoPart);
         call.enqueue(new Callback<PostResponse>() {
             @Override
             public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {

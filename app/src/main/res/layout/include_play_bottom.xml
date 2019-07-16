@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="#c99f9e9e">
+
+
+    <Button
+        android:id="@+id/btn_play"
+        style="?android:attr/borderlessButtonStyle"
+        android:text="@string/pause"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:text="00:00/00:00"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/btn_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"  />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_toRightOf="@+id/tv_time"
+        android:layout_toLeftOf="@+id/btn_setting"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+
+    <Button
+        android:id="@+id/btn_setting"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="63dp"
+        android:layout_height="49dp"
+        android:layout_marginRight="-15dp"
+        android:layout_toLeftOf="@+id/btn_stop"
+        android:text="@string/smallScreen" />
+
+    <Button
+        android:id="@+id/btn_stop"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="57dp"
+        android:layout_height="49dp"
+        android:layout_marginRight="-7dp"
+        android:layout_toLeftOf="@+id/tv_vol"
+        android:text="@string/stop" />
+
+    <TextView
+        android:id="@+id/tv_vol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_centerVertical="true"
+        android:layout_marginRight="17dp"
+        android:layout_toLeftOf="@+id/seekBar1"
+        android:text="音量"
+        android:visibility = "invisible"/>
+
+    <SeekBar
+        android:id="@+id/seekBar1"
+        android:layout_width="61dp"
+        android:layout_height="42dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:visibility = "invisible" />
+
+</RelativeLayout>

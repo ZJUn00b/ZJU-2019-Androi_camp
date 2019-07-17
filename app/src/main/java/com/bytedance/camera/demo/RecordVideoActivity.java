@@ -21,7 +21,8 @@ public class RecordVideoActivity extends AppCompatActivity {
     private static final int REQUEST_EXTERNAL_CAMERA = 101;
     String[] permissions = new String[] {
             Manifest.permission.CAMERA,
-            Manifest.permission.RECORD_AUDIO
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
     @Override

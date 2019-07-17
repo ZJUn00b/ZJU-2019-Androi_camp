@@ -2,15 +2,20 @@ package com.bytedance.camera.demo;
 
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
+import android.media.ExifInterface;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.File;
@@ -27,13 +32,14 @@ public class CustomCameraActivity extends AppCompatActivity {
     private SurfaceView mSurfaceView;
     private SurfaceHolder mHolder;
     private Camera mCamera;
-
+    private Button mpause,mcontinue;
     private int CAMERA_TYPE = Camera.CameraInfo.CAMERA_FACING_BACK;
 
     private boolean isRecording = false;
 
     private int rotationDegree = 0;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +49,9 @@ public class CustomCameraActivity extends AppCompatActivity {
         setContentView(R.layout.activity_custom_camera);
 
         mSurfaceView = findViewById(R.id.img);
-
+        //暂停和继续录制键
+        mpause = findViewById(R.id.video_pro1) ;
+        mcontinue = findViewById(R.id.video_pro2);
         mCamera = getCamera(CAMERA_TYPE);
         mCamera.setDisplayOrientation(getCameraDisplayOrientation(CAMERA_TYPE));
         //todo 给SurfaceHolder添加Callback
@@ -53,6 +61,9 @@ public class CustomCameraActivity extends AppCompatActivity {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 try {
+                    if(mCamera!=null)
+                    releaseCameraAndPreview();
+                    mCamera = getCamera(CAMERA_TYPE);
                     mCamera.setPreviewDisplay(holder);
                     mCamera.startPreview();
                 }catch(Exception e){
@@ -75,7 +86,6 @@ public class CustomCameraActivity extends AppCompatActivity {
         findViewById(R.id.btn_picture).setOnClickListener(v -> {
             //todo 拍一张照片
             mCamera.takePicture(null, null, mPicture);
-            Toast.makeText(getApplicationContext(),"成功保存", Toast.LENGTH_SHORT).show();
         });
 
         findViewById(R.id.btn_record).setOnClickListener(v -> {
@@ -84,14 +94,20 @@ public class CustomCameraActivity extends AppCompatActivity {
                 //todo 停止录制
                 releaseMediaRecorder();
                 isRecording = false;
+                findViewById(R.id.video_pro1).setVisibility(View.INVISIBLE);
+                findViewById(R.id.video_pro2).setVisibility(View.INVISIBLE);
                 Toast.makeText(getApplicationContext(),"结束录制", Toast.LENGTH_SHORT).show();
             } else {
                 //todo 录制
                 prepareVideoRecorder();
                 isRecording = true;
+                //录制时暂停键和继续键都可见
+                findViewById(R.id.video_pro1).setVisibility(View.VISIBLE);
+                findViewById(R.id.video_pro2).setVisibility(View.VISIBLE);
                 Toast.makeText(getApplicationContext(),"开始录制", Toast.LENGTH_SHORT).show();
             }
         });
+
 
         findViewById(R.id.btn_facing).setOnClickListener(v -> {
             //todo 切换前后摄像头
@@ -136,7 +152,23 @@ public class CustomCameraActivity extends AppCompatActivity {
                 }
             }
         });
+        findViewById(R.id.video_pro1).setOnClickListener(v->{
+            //暂停
+            if (isRecording) {
+                pauseVideoRecorder(mMediaRecorder);
+                isRecording = false;
+            }
+        });
+        findViewById(R.id.video_pro2).setOnClickListener(v->{
+            //继续
+            if (isRecording == false) {
+                resumeVideoRecorder(mMediaRecorder);
+                isRecording = true;
+            }
+        });
     }
+
+
 
     public Camera getCamera(int position) {
         CAMERA_TYPE = position;
@@ -144,12 +176,30 @@ public class CustomCameraActivity extends AppCompatActivity {
             releaseCameraAndPreview();
         }
         Camera cam = Camera.open(position);
-
         //todo 摄像头添加属性，例是否自动对焦，设置旋转方向等
         rotationDegree = getCameraDisplayOrientation(position);
         cam.setDisplayOrientation(rotationDegree);
-        //todo 自动对焦
+        //done 自动对焦
+        Camera.Parameters parameters = cam.getParameters();
+        //只有后置相机支持自动对焦
+        if (CAMERA_TYPE == Camera.CameraInfo.CAMERA_FACING_BACK)
+        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+        if (mCamera != null && CAMERA_TYPE == Camera.CameraInfo.CAMERA_FACING_BACK) {
 
+            mCamera.autoFocus(new Camera.AutoFocusCallback() {
+                @Override
+                public void onAutoFocus(boolean b, Camera camera) {
+                    if (b) {
+                        camera.cancelAutoFocus();
+
+                        Toast.makeText(CustomCameraActivity.this, "auto focus success", Toast.LENGTH_LONG).show();
+                    } else {
+                        mCamera.autoFocus(this);//如果失败，自动聚焦
+                    }
+                }
+            });
+        }
+        cam.setParameters(parameters);
         return cam;
     }
 
@@ -220,6 +270,16 @@ public class CustomCameraActivity extends AppCompatActivity {
 
 
     private MediaRecorder mMediaRecorder;
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private boolean pauseVideoRecorder(MediaRecorder mMediaRecorder){
+        mMediaRecorder.pause();
+        return true;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private boolean resumeVideoRecorder(MediaRecorder mMediaRecorder){
+        mMediaRecorder.resume();
+        return true;
+    }
 
     private boolean prepareVideoRecorder() {
         //todo 准备MediaRecorder
@@ -264,10 +324,11 @@ public class CustomCameraActivity extends AppCompatActivity {
             FileOutputStream fos = new FileOutputStream(pictureFile);
             fos.write(data);
             fos.close();
+            Toast.makeText(CustomCameraActivity.this, "save to "+pictureFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             Log.d("mPicture", "Error accessing file: " + e.getMessage());
         }
-
+        setPictureDegreeZero(pictureFile.getAbsolutePath());
         mCamera.startPreview();
     };
 
@@ -304,4 +365,26 @@ public class CustomCameraActivity extends AppCompatActivity {
         return optimalSize;
     }
 
+
+    //done 自动旋转
+    private static final int[] ORIENTATION_MAP = new int[]{
+            ExifInterface.ORIENTATION_NORMAL, ExifInterface.ORIENTATION_ROTATE_90,
+            ExifInterface.ORIENTATION_ROTATE_180, ExifInterface.ORIENTATION_ROTATE_270
+    };
+
+    public void setPictureDegreeZero(String path) {
+        try {
+            ExifInterface exifInterface = new ExifInterface(path);
+            int orientation = ORIENTATION_MAP[getCameraDisplayOrientation(CAMERA_TYPE) / 90];
+            exifInterface.setAttribute(ExifInterface.TAG_ORIENTATION,
+                    String.valueOf(orientation));
+            exifInterface.saveAttributes();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
+
+
+
+

@@ -21,4 +21,4 @@
 
 * RECORD开始后出现RECORD PAUSE和RECORD CONTINUE键，分别控制暂停和继续录制，录制结束后消失
 
-![pic3](https://github.com/ZJUn00b/ZJU-2019-Android_camp/blob/hw8/pics/3.)
+![pic3](https://github.com/ZJUn00b/ZJU-2019-Android_camp/blob/hw8/pics/3.jpg)

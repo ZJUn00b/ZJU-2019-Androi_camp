@@ -3,6 +3,7 @@ package com.bytedance.camera.demo.utils;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -43,7 +44,7 @@ public class Utils {
             return uri.toString();
         }
         if (ContentResolver.SCHEME_CONTENT.equals(schema)) {
-            String[] projection = new String[] {MediaStore.MediaColumns.DATA};
+            String[] projection = new String[]{MediaStore.MediaColumns.DATA};
             Cursor cursor = null;
             String filePath = "";
             try {
@@ -73,7 +74,7 @@ public class Utils {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && !TextUtils.isEmpty(id) && id.contains(":")) {
                         id = id.split(":")[1];
                     }
-                    String[] selectionArgs = new String[] {id};
+                    String[] selectionArgs = new String[]{id};
                     cursor = contentResolver
                             .query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, selection, selectionArgs, null);
                     if (cursor.moveToFirst()) {
@@ -191,5 +192,12 @@ public class Utils {
         if (mPermissionList.size() > 0) {//有权限没有通过，需要申请
             ActivityCompat.requestPermissions(activity, permissions, requestCode);
         }
+    }
+
+    public static void insertIntoGallery(File file, Context context) {
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Uri fileUri = Uri.fromFile(file);
+        intent.setData(fileUri);
+        context.sendBroadcast(intent);
     }
 }

@@ -18,6 +18,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.bytedance.camera.demo.utils.Utils;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,7 +34,7 @@ public class CustomCameraActivity extends AppCompatActivity {
     private SurfaceView mSurfaceView;
     private SurfaceHolder mHolder;
     private Camera mCamera;
-    private Button mpause,mcontinue;
+    private Button mpause, mcontinue;
     private int CAMERA_TYPE = Camera.CameraInfo.CAMERA_FACING_BACK;
 
     private boolean isRecording = false;
@@ -50,7 +52,7 @@ public class CustomCameraActivity extends AppCompatActivity {
 
         mSurfaceView = findViewById(R.id.img);
         //暂停和继续录制键
-        mpause = findViewById(R.id.video_pro1) ;
+        mpause = findViewById(R.id.video_pro1);
         mcontinue = findViewById(R.id.video_pro2);
         mCamera = getCamera(CAMERA_TYPE);
         mCamera.setDisplayOrientation(getCameraDisplayOrientation(CAMERA_TYPE));
@@ -61,12 +63,12 @@ public class CustomCameraActivity extends AppCompatActivity {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 try {
-                    if(mCamera!=null)
-                    releaseCameraAndPreview();
+                    if (mCamera != null)
+                        releaseCameraAndPreview();
                     mCamera = getCamera(CAMERA_TYPE);
                     mCamera.setPreviewDisplay(holder);
                     mCamera.startPreview();
-                }catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -96,7 +98,7 @@ public class CustomCameraActivity extends AppCompatActivity {
                 isRecording = false;
                 findViewById(R.id.video_pro1).setVisibility(View.INVISIBLE);
                 findViewById(R.id.video_pro2).setVisibility(View.INVISIBLE);
-                Toast.makeText(getApplicationContext(),"结束录制", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "结束录制", Toast.LENGTH_SHORT).show();
             } else {
                 //todo 录制
                 prepareVideoRecorder();
@@ -104,7 +106,7 @@ public class CustomCameraActivity extends AppCompatActivity {
                 //录制时暂停键和继续键都可见
                 findViewById(R.id.video_pro1).setVisibility(View.VISIBLE);
                 findViewById(R.id.video_pro2).setVisibility(View.VISIBLE);
-                Toast.makeText(getApplicationContext(),"开始录制", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "开始录制", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -113,33 +115,34 @@ public class CustomCameraActivity extends AppCompatActivity {
             //todo 切换前后摄像头
             if (CAMERA_TYPE == Camera.CameraInfo.CAMERA_FACING_BACK) {
                 rotationDegree = getCameraDisplayOrientation(Camera.CameraInfo.CAMERA_FACING_FRONT);
-                try{
+                try {
                     mCamera = getCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
                     mCamera.setDisplayOrientation(rotationDegree);
                     startPreview(mHolder);
-                }catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else {
                 rotationDegree = getCameraDisplayOrientation(Camera.CameraInfo.CAMERA_FACING_BACK);
-                try{
+                try {
                     mCamera = getCamera(Camera.CameraInfo.CAMERA_FACING_BACK);
                     mCamera.setDisplayOrientation(rotationDegree);
                     startPreview(mHolder);
-                }catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-        findViewById(R.id.flash).setOnClickListener(v->{
+        findViewById(R.id.flash).setOnClickListener(v -> {
             //todo extra 监听闪光灯
             Camera.Parameters parameters = mCamera.getParameters();
-            if (parameters.getFlashMode().equals(android.hardware.Camera.Parameters.FLASH_MODE_TORCH))
-            {parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-                mCamera.setParameters(parameters);}
-                else
-            {parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                mCamera.setParameters(parameters);}
+            if (parameters.getFlashMode().equals(android.hardware.Camera.Parameters.FLASH_MODE_TORCH)) {
+                parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                mCamera.setParameters(parameters);
+            } else {
+                parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                mCamera.setParameters(parameters);
+            }
         });
         findViewById(R.id.btn_zoom).setOnClickListener(v -> {
             //todo 调焦，需要判断手机是否支持
@@ -152,14 +155,14 @@ public class CustomCameraActivity extends AppCompatActivity {
                 }
             }
         });
-        findViewById(R.id.video_pro1).setOnClickListener(v->{
+        findViewById(R.id.video_pro1).setOnClickListener(v -> {
             //暂停
             if (isRecording) {
                 pauseVideoRecorder(mMediaRecorder);
                 isRecording = false;
             }
         });
-        findViewById(R.id.video_pro2).setOnClickListener(v->{
+        findViewById(R.id.video_pro2).setOnClickListener(v -> {
             //继续
             if (isRecording == false) {
                 resumeVideoRecorder(mMediaRecorder);
@@ -167,7 +170,6 @@ public class CustomCameraActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
     public Camera getCamera(int position) {
@@ -183,7 +185,7 @@ public class CustomCameraActivity extends AppCompatActivity {
         Camera.Parameters parameters = cam.getParameters();
         //只有后置相机支持自动对焦
         if (CAMERA_TYPE == Camera.CameraInfo.CAMERA_FACING_BACK)
-        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
         if (mCamera != null && CAMERA_TYPE == Camera.CameraInfo.CAMERA_FACING_BACK) {
 
             mCamera.autoFocus(new Camera.AutoFocusCallback() {
@@ -270,16 +272,20 @@ public class CustomCameraActivity extends AppCompatActivity {
 
 
     private MediaRecorder mMediaRecorder;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private boolean pauseVideoRecorder(MediaRecorder mMediaRecorder){
+    private boolean pauseVideoRecorder(MediaRecorder mMediaRecorder) {
         mMediaRecorder.pause();
         return true;
     }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private boolean resumeVideoRecorder(MediaRecorder mMediaRecorder){
+    private boolean resumeVideoRecorder(MediaRecorder mMediaRecorder) {
         mMediaRecorder.resume();
         return true;
     }
+
+
 
     private boolean prepareVideoRecorder() {
         //todo 准备MediaRecorder
@@ -291,6 +297,7 @@ public class CustomCameraActivity extends AppCompatActivity {
 
         mMediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
         mMediaRecorder.setOutputFile(getOutputMediaFile(MEDIA_TYPE_VIDEO).toString());
+        //mMediaRecorder.setOutputFile(videoFile.getAbsolutePath());
         mMediaRecorder.setPreviewDisplay(mHolder.getSurface());
         mMediaRecorder.setOrientationHint(rotationDegree);
 
@@ -312,6 +319,7 @@ public class CustomCameraActivity extends AppCompatActivity {
         mMediaRecorder.release();
         mMediaRecorder = null;
         mCamera.lock();
+
     }
 
 
@@ -324,11 +332,12 @@ public class CustomCameraActivity extends AppCompatActivity {
             FileOutputStream fos = new FileOutputStream(pictureFile);
             fos.write(data);
             fos.close();
-            Toast.makeText(CustomCameraActivity.this, "save to "+pictureFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+            Toast.makeText(CustomCameraActivity.this, "save to " + pictureFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             Log.d("mPicture", "Error accessing file: " + e.getMessage());
         }
         setPictureDegreeZero(pictureFile.getAbsolutePath());
+        Utils.insertIntoGallery(pictureFile, this);
         mCamera.startPreview();
     };
 
@@ -341,7 +350,6 @@ public class CustomCameraActivity extends AppCompatActivity {
 
         Camera.Size optimalSize = null;
         double minDiff = Double.MAX_VALUE;
-
         int targetHeight = Math.min(w, h);
 
         for (Camera.Size size : sizes) {

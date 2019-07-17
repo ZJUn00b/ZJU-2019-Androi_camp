@@ -18,13 +18,14 @@ public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_CALL_CAMERA = 2;
 
 
-    private String[] permissions = new String[] {
+    private String[] permissions = new String[]{
             Manifest.permission.CAMERA,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.RECORD_AUDIO
     };
 
     List<String> mPermissionList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             if (mPermissionList.isEmpty()) {//未授予的权限为空，表示都授予了
-                Toast.makeText(MainActivity.this,"已经授权",Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "all permission granted", Toast.LENGTH_LONG).show();
             } else {//请求权限方法
                 String[] permissions = mPermissionList.toArray(new String[mPermissionList.size()]);//将List转为数组
                 ActivityCompat.requestPermissions(MainActivity.this, permissions, MY_PERMISSIONS_REQUEST_CALL_CAMERA);

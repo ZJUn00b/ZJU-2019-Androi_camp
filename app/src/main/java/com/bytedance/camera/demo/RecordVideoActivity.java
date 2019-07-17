@@ -9,9 +9,10 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.VideoView;
 
+import com.bytedance.camera.demo.utils.UriUtils;
 import com.bytedance.camera.demo.utils.Utils;
 
-import java.net.URL;
+import java.io.File;
 
 public class RecordVideoActivity extends AppCompatActivity {
 
@@ -19,7 +20,7 @@ public class RecordVideoActivity extends AppCompatActivity {
     private static final int REQUEST_VIDEO_CAPTURE = 1;
 
     private static final int REQUEST_EXTERNAL_CAMERA = 101;
-    String[] permissions = new String[] {
+    String[] permissions = new String[]{
             Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -52,6 +53,8 @@ public class RecordVideoActivity extends AppCompatActivity {
             //?为什么这里不用通过getExtra来获取数据呢？
             Uri videoUri = intent.getData();
             videoView.setVideoURI(videoUri);
+            Utils.insertIntoGallery(new File(UriUtils.formatUri(this, videoUri)),
+                    this);
             videoView.start();
         }
     }
@@ -73,8 +76,8 @@ public class RecordVideoActivity extends AppCompatActivity {
 
     private void openVideoRecordApp() {
         Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        if (takeVideoIntent.resolveActivity(getPackageManager())!= null){
-            startActivityForResult(takeVideoIntent,REQUEST_VIDEO_CAPTURE);
+        if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
         }
     }
 }

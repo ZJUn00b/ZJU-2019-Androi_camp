@@ -27,6 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.ui.VideoWFViewActivity" android:theme="@style/LoginStyle"/>
+        <activity android:name=".view.ui.VideoActivity"  android:theme="@style/LoginStyle"/>
     </application>
 
 </manifest>

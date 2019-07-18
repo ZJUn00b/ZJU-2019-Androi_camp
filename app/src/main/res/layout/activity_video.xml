@@ -4,7 +4,7 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.example.administrator.douyin.FullWindowVideoView
+    <com.percy.minidouyin.FullWindowVideoView
         android:id="@+id/video_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -53,6 +53,7 @@
         </RelativeLayout>
 
         <TextView
+            android:id = "@+id/love_text"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:drawableTop="@mipmap/heart_icon"
@@ -62,6 +63,7 @@
             android:gravity="center"
             />
         <TextView
+            android:id = "@+id/comment_text"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:drawableTop="@mipmap/msg_icon"
@@ -71,6 +73,7 @@
             android:gravity="center"
             />
         <TextView
+            android:id = "@+id/share_text"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:drawableTop="@mipmap/share_icon"
@@ -95,6 +98,12 @@
     <com.example.administrator.douyin.Love2
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <SeekBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     </com.example.administrator.douyin.Love2>
 
 </RelativeLayout>

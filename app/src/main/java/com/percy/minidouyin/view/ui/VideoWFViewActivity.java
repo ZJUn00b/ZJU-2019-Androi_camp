@@ -44,6 +44,8 @@ public class VideoWFViewActivity extends AppCompatActivity {
     private static final String TAG = "VideoWFViewActivity";
     public Uri mSelectedImage;
     private Uri mSelectedVideo;
+    //接收到来自登录界面的姓名和学号
+    private String mID,mNAME;
     //分别设置取封面和取视频的信号
     private static final int PICK_IMAGE = 1;
     private static final int PICK_VIDEO = 2;
@@ -53,6 +55,8 @@ public class VideoWFViewActivity extends AppCompatActivity {
 
     //下拉刷新组件
     private SwipeRefreshLayout swiperereshlayout ;
+
+    static private String thumbTextNum = (int)(1+Math.random()*(10-1+1))+10 +"";
 
     Button mBtnRefresh;
 
@@ -82,20 +86,29 @@ public class VideoWFViewActivity extends AppCompatActivity {
     }
 //---------------------------------------------------------------------------------------
 
-    //实现瀑布流布局的页面
+
 
     /**
     *下拉刷新
      */
 
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stream);
+        Intent mIntent=getIntent();
+        mID = mIntent.getStringExtra("ID");
+        mNAME = mIntent.getStringExtra("NAME");
+        //Toast.makeText(VideoWFViewActivity.this, ""+mNAME+mID, Toast.LENGTH_LONG).show();
         initRecyclerView();
         initBtns();
-
+        //进入界面后第一次自动刷新
+        swiperereshlayout.setRefreshing(true);
+        fetchFeed();
     }
 
     private void initBtns() {
@@ -124,13 +137,12 @@ public class VideoWFViewActivity extends AppCompatActivity {
         });*/
 
         //mBtnRefresh = findViewById(R.id.btn_refresh);
-
         swiperereshlayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
         mRv = findViewById(R.id.streamList);
 
 
-        swiperereshlayout.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light, android.R.color.holo_orange_light);
+        /*swiperereshlayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light, android.R.color.holo_orange_light);*/
         //给swipeRefreshLayout绑定刷新监听
         swiperereshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -142,19 +154,36 @@ public class VideoWFViewActivity extends AppCompatActivity {
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         public ImageView img;
-        public TextView t1,t2;
+        public TextView idText,authorText,updateText,thumbText;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             //和item中的图片控件进行绑定
             img = itemView.findViewById(R.id.coverView);
-
-
+            //对文字控件也进行绑定
+            //学号
+            idText = itemView.findViewById(R.id.idText);
+            //姓名
+            authorText = itemView.findViewById(R.id.authorText);
+            //时间戳
+            updateText = itemView.findViewById(R.id.updateText);
+            //点赞数
+            thumbText = itemView.findViewById(R.id.thumbText);
         }
 
         public void bind(final Activity activity, final Video video) {
+            //对item中的元素进行绑定
+            //封面
             ImageHelper.displayWebImage(video.getImageUrl(), img);
+            idText.setText(video.getStudentId());
+            authorText.setText(video.getUserName());
+            updateText.setText(video.getupdatedAt());
+            //随机点赞数
+
+            thumbText.setText(thumbTextNum);
+
+
             String text1 = video.getImage_h()+"";
             String text2 = video.getImage_w()+"";
            // t1.setText(text1);
@@ -245,7 +274,7 @@ public class VideoWFViewActivity extends AppCompatActivity {
         MultipartBody.Part coverImagePart = getMultipartFromUri("cover_image", mSelectedImage);
         MultipartBody.Part videoPart = getMultipartFromUri("video", mSelectedVideo);
         // TODO 9: post video & update buttons
-        Call<PostResponse> call = getMiniDouyinService().postVideo("3170102492","hootch",coverImagePart,videoPart);
+        Call<PostResponse> call = getMiniDouyinService().postVideo(mID+"",mNAME+"",coverImagePart,videoPart);
         call.enqueue(new Callback<PostResponse>() {
             @Override
             public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {

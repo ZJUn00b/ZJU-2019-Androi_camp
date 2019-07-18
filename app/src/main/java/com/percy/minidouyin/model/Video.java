@@ -12,6 +12,8 @@ public class Video {
   private String imageUrl;
   @SerializedName("video_url")
   private String videoUrl;
+  @SerializedName("updatedAt")
+  private String updatedAt;
   @SerializedName("image_w")
   private int image_w;
   @SerializedName("image_h")
@@ -62,5 +64,12 @@ public class Video {
   }
   public int getImage_w(){
     return  image_w;
+  }
+
+  public void setupdatedAt(String updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+  public String getupdatedAt(){
+    return  updatedAt;
   }
 }

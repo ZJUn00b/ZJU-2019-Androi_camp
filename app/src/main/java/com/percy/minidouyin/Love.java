@@ -20,6 +20,7 @@ import java.util.Random;
 
 public class Love extends RelativeLayout {
     private Context mContext;
+    private int flag = -1;//单击不点赞
     float[] num = {-30, -20, 0, 20, 30};//随机心形图片角度
 
     public Love(Context context) {
@@ -43,7 +44,10 @@ public class Love extends RelativeLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
+        //双击显示爱心
+        flag = flag +1;
+        if (flag != 1) return super.onTouchEvent(event);
+        else flag = -1;
         final ImageView imageView = new ImageView(mContext);
         LayoutParams params = new LayoutParams(300, 300);
         params.leftMargin = (int) event.getX() - 150;

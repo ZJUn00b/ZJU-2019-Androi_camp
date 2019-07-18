@@ -61,4 +61,6 @@
     <color name="alpha_white_70">#4Dffffff</color>
     <color name="cccccc">#cccccc</color>
     <color name="ff7f000000">#7f000000</color>
+
+    <color name="bac">#2D3130</color>
 </resources>

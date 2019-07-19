@@ -80,7 +80,6 @@
             android:layout_marginTop="@dimen/dm_5"
             android:background="@drawable/common_f5_45dp"
             android:hint="请输入姓名"
-            android:inputType="textPassword"
             android:maxLength="18"
             android:paddingLeft="@dimen/dm_15"
             android:paddingTop="@dimen/dm_10"

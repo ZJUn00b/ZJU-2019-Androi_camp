@@ -38,11 +38,11 @@
         </activity>
         <activity android:name=".view.ui.VideoWFViewActivity" android:theme="@style/LoginStyle"/>
         <activity android:name=".view.ui.VideoActivity"  android:theme="@style/LoginStyle"/>
-        <activity android:name=".view.ui.CameraActivity" />
-        <activity android:name=".view.ui.VideoStreamActivity"/>
-        <activity android:name=".camera.CustomCameraActivity"/>
-        <activity android:name=".camera.TakePictureActivity"/>
-        <activity android:name=".camera.RecordVideoActivity"/>
+        <activity android:name=".view.ui.CameraActivity" android:theme="@style/LoginStyle"/>
+        <activity android:name=".view.ui.VideoStreamActivity" android:theme="@style/LoginStyle"/>
+        <activity android:name=".camera.CustomCameraActivity" android:theme="@style/LoginStyle"/>
+        <activity android:name=".camera.TakePictureActivity" android:theme="@style/LoginStyle"/>
+        <activity android:name=".camera.RecordVideoActivity" android:theme="@style/LoginStyle"/>
 
     </application>
 

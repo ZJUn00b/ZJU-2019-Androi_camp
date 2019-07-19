@@ -23,6 +23,8 @@ public class Love extends RelativeLayout {
     private int flag = -1;//单击不点赞
     float[] num = {-30, -20, 0, 20, 30};//随机心形图片角度
 
+    //简单计时
+
     public Love(Context context) {
         super(context);
         initView(context);
@@ -41,11 +43,15 @@ public class Love extends RelativeLayout {
     private void initView(Context context) {
         mContext = context;
     }
-
+    long startTime =  System.currentTimeMillis();
+    long endTime =  System.currentTimeMillis();
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         //双击显示爱心
         flag = flag +1;
+        endTime =  System.currentTimeMillis();
+        if ( endTime -startTime > 1000) flag = -1;
+        startTime = endTime;
         if (flag != 1) return super.onTouchEvent(event);
         else flag = -1;
         final ImageView imageView = new ImageView(mContext);

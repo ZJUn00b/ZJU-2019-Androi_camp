@@ -196,8 +196,6 @@ public class VideoStreamActivity extends AppCompatActivity {
             //ImageHelper.displayWebImage(video.getImageUrl(), img);
             String text1 = video.getImage_h()+"";
             String text2 = video.getImage_w()+"";
-            // t1.setText(text1);
-            //t2.setText(text2);
             img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

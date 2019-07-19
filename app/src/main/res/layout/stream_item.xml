@@ -14,7 +14,7 @@
         android:id="@+id/style_item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#8D3130">
+        android:background="#673AB7">
 
         <ImageView
             android:id="@+id/coverView"

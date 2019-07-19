@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -46,7 +47,7 @@ public class CustomCameraActivity extends AppCompatActivity {
     private SurfaceView mSurfaceView;
     private SurfaceHolder mHolder;
     private Camera mCamera;
-    private Button mpause, mcontinue;
+    private ImageButton mpause, mcontinue;
     private int CAMERA_TYPE = Camera.CameraInfo.CAMERA_FACING_BACK;
 
     private boolean isRecording = false;
@@ -89,28 +90,7 @@ public class CustomCameraActivity extends AppCompatActivity {
             }
         });
 
-        mTouchBtn02 = findViewById(R.id.touch_btn02);
-        mTouchBtn02.setOnHoldListener(new TouchButton.OnHoldListener() {
-            @Override
-            public void onHold(boolean hold) {
-                Calendar c = Calendar.getInstance();
-                long now = c.getTimeInMillis();
-                if (hold) {
-                    prepareVideoRecorder();
-                    isRecording = true;
-                    //录制时暂停键和继续键都可见
-                    findViewById(R.id.video_pro1).setVisibility(View.VISIBLE);
-                    findViewById(R.id.video_pro2).setVisibility(View.VISIBLE);
-                    Toast.makeText(getApplicationContext(), "开始录制", Toast.LENGTH_SHORT).show();
-                } if(!hold||(c.getTimeInMillis()-now)>10000){
-                    releaseMediaRecorder();
-                    isRecording = false;
-                    findViewById(R.id.video_pro1).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.video_pro2).setVisibility(View.INVISIBLE);
-                    Toast.makeText(getApplicationContext(), "结束录制", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+
         //暂停和继续录制键
         mpause = findViewById(R.id.video_pro1);
         mcontinue = findViewById(R.id.video_pro2);
@@ -383,7 +363,7 @@ public class CustomCameraActivity extends AppCompatActivity {
         mMediaRecorder.release();
         mMediaRecorder = null;
         mCamera.lock();
-
+        Log.d(TAG, ""+String.valueOf(mfile));
 
         Uri VideoUri_raw = FileProvider.getUriForFile(CustomCameraActivity.this, "com.percy.minidouyin.fileprovider", mfile);
 //        Uri VideoUri =Uri.fromFile(new File(ContentUriUtil.getPath(CustomCameraActivity.this, VideoUri_raw)));

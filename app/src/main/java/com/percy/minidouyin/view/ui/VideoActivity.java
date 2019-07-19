@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.percy.minidouyin.R;
 import com.percy.minidouyin.anim.DYLoadingView;
+import com.percy.minidouyin.camera.CustomCameraActivity;
 
 public class VideoActivity extends AppCompatActivity {
     private DYLoadingView dy1;
@@ -44,7 +45,7 @@ public class VideoActivity extends AppCompatActivity {
         //监听加号按键，可以实现点击加号进入内建相机
         findViewById(R.id.add_post_cover).setOnClickListener(v->{
             //监听加号点击行为
-            startActivity(new Intent(VideoActivity.this, CameraActivity.class));
+            startActivity(new Intent(VideoActivity.this, CustomCameraActivity.class));
         });
 
         //缓冲的时候显示动画

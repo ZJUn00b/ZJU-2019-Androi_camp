@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,7 +31,6 @@ import com.percy.minidouyin.camera.CustomCameraActivity;
 import com.percy.minidouyin.model.GetResponse;
 import com.percy.minidouyin.model.PostResponse;
 import com.percy.minidouyin.model.Video;
-import com.percy.minidouyin.util.ResourceUtils;
 import com.percy.minidouyin.util.Utils;
 import com.percy.minidouyin.util.saveImage;
 
@@ -53,12 +51,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * 在此情况下使用的都为自定义相机
- * */
+ */
 public class VideoWFViewActivity extends AppCompatActivity {
     private static final int REQUEST_VIDEO_CAPTURE = 1;
     private static final int REQUEST_EXTERNAL_CAMERA = 101;
     private static final int REQUEST_CUSTOM_VIDEO_CAPTURE = 4;
-    String[] permissions = new String[] {
+    String[] permissions = new String[]{
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
     };
@@ -66,7 +64,7 @@ public class VideoWFViewActivity extends AppCompatActivity {
     public Uri mSelectedImage;
     private Uri mSelectedVideo;
     //接收到来自登录界面的姓名和学号
-    private String mID,mNAME;
+    private String mID, mNAME;
     //分别设置取封面和取视频的信号
     private static final int PICK_IMAGE = 1;
     private static final int PICK_VIDEO = 2;
@@ -75,10 +73,10 @@ public class VideoWFViewActivity extends AppCompatActivity {
     private List<Video> mVideos = new ArrayList<>();
 
     //下拉刷新组件
-    private SwipeRefreshLayout swiperereshlayout ;
+    private SwipeRefreshLayout swiperereshlayout;
 
-    static private String thumbTextNum = (int)(1+Math.random()*(10-1+1))+10 +"";
-    private ImageButton imageButton ;
+    static private String thumbTextNum = (int) (1 + Math.random() * (10 - 1 + 1)) + 10 + "";
+    private ImageButton imageButton;
     Button mBtnRefresh;
 
     //------------------------登录界面后解决网路请求
@@ -89,17 +87,14 @@ public class VideoWFViewActivity extends AppCompatActivity {
 
     private IMiniDouyinService miniDouyinService = retrofit.create(IMiniDouyinService.class);
 
-    private IMiniDouyinService getMiniDouyinService()
-    {
-        if(retrofit == null)
-        {
+    private IMiniDouyinService getMiniDouyinService() {
+        if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(IMiniDouyinService.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
-        if(miniDouyinService == null)
-        {
+        if (miniDouyinService == null) {
             miniDouyinService = retrofit.create(IMiniDouyinService.class);
         }
 
@@ -108,20 +103,16 @@ public class VideoWFViewActivity extends AppCompatActivity {
 //---------------------------------------------------------------------------------------
 
 
-
     /**
-    *下拉刷新
+     * 下拉刷新
      */
-
-
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stream);
-        Intent mIntent=getIntent();
+        Intent mIntent = getIntent();
         mID = mIntent.getStringExtra("ID");
         mNAME = mIntent.getStringExtra("NAME");
         //Toast.makeText(VideoWFViewActivity.this, ""+mNAME+mID, Toast.LENGTH_LONG).show();
@@ -133,7 +124,7 @@ public class VideoWFViewActivity extends AppCompatActivity {
     }
 
     private void initBtns() {
-      //  mBtn = findViewById(R.id.btn);
+        //  mBtn = findViewById(R.id.btn);
       /*  mBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,13 +164,13 @@ public class VideoWFViewActivity extends AppCompatActivity {
         });
 
         imageButton = findViewById(R.id.F_btn);
-        imageButton.setOnClickListener(v->{
+        imageButton.setOnClickListener(v -> {
             if (Utils.isPermissionsReady(this, permissions)) {
                 //todo 拉起自定义摄像机
-                startActivityForResult(new Intent(VideoWFViewActivity.this, CustomCameraActivity.class),REQUEST_CUSTOM_VIDEO_CAPTURE);
+                startActivityForResult(new Intent(VideoWFViewActivity.this, CustomCameraActivity.class), REQUEST_CUSTOM_VIDEO_CAPTURE);
             } else {
                 //todo 权限检查
-                Utils.reuqestPermissions(this,permissions,REQUEST_VIDEO_CAPTURE);
+                Utils.reuqestPermissions(this, permissions, REQUEST_VIDEO_CAPTURE);
                 Utils.reuqestPermissions(this, permissions, REQUEST_EXTERNAL_CAMERA);
             }
         });
@@ -187,7 +178,7 @@ public class VideoWFViewActivity extends AppCompatActivity {
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         public ImageView img;
-        public TextView idText,authorText,updateText,thumbText;
+        public TextView idText, authorText, updateText, thumbText;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -217,9 +208,9 @@ public class VideoWFViewActivity extends AppCompatActivity {
             thumbText.setText(thumbTextNum);
 
 
-            String text1 = video.getImage_h()+"";
-            String text2 = video.getImage_w()+"";
-           // t1.setText(text1);
+            String text1 = video.getImage_h() + "";
+            String text2 = video.getImage_w() + "";
+            // t1.setText(text1);
             //t2.setText(text2);
             img.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -240,7 +231,8 @@ public class VideoWFViewActivity extends AppCompatActivity {
             public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
                 return new MyViewHolder(
                         LayoutInflater.from(VideoWFViewActivity.this)
-                                .inflate(R.layout.stream_item, viewGroup, false)); }
+                                .inflate(R.layout.stream_item, viewGroup, false));
+            }
 
             @Override
             public void onBindViewHolder(@NonNull MyViewHolder viewHolder, int i) {
@@ -288,56 +280,41 @@ public class VideoWFViewActivity extends AppCompatActivity {
                 mSelectedVideo = mVideoUri;
 
                 Log.d(TAG, "mSelectedVideo = " + mSelectedVideo);
-               // mBtn.setText(R.string.post_it);
+                // mBtn.setText(R.string.post_it);
                 //todo 拿到了video之后马上自动生成封面
-
-                Bitmap bitmap = ThumbnailUtils.createVideoThumbnail( mSelectedVideo.getPath(), MediaStore.Video.Thumbnails.MINI_KIND);
-                //MediaMetadataRetriever media = new MediaMetadataRetriever();
-                // media.setDataSource(String.valueOf(mSelectedVideo));
-                //Log.d(TAG, "mSelectedImage = " + mSelectedImage);
-                //Bitmap bitmap  = media.getFrameAtTime(1, MediaMetadataRetriever.OPTION_CLOSEST_SYNC );
-                //Log.d(TAG, "mSelectedImage = " + mSelectedImage);
-                // imageView.setImageBitmap(bitmap);//对应的ImageView
-               Date date = new Date(System.currentTimeMillis());
-              if (bitmap!=null) Log.d(TAG, "mSelectedImage null = " + mSelectedImage);
-          Uri uri = saveImage.saveImage(bitmap, "minidouyin"+date+".jpeg",VideoWFViewActivity.this);
+                Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(mSelectedVideo.getPath(), MediaStore.Video.Thumbnails.MINI_KIND);
+                Date date = new Date(System.currentTimeMillis());
+                if (bitmap != null) Log.d(TAG, "mSelectedImage null = " + mSelectedImage);
+                Uri uri = saveImage.saveImage(bitmap, "minidouyin" + date + ".jpeg", VideoWFViewActivity.this);
                 mSelectedImage = uri;
                 Log.d(TAG, "mSelectedImage = " + mSelectedImage);
-                postVideo();
-
-
+                postVideo(mSelectedImage, mSelectedVideo);
             }
         }
     }
 
     private MultipartBody.Part getMultipartFromUri(String name, Uri uri) {
-        File f = new File(ResourceUtils.getRealPath(VideoWFViewActivity.this, uri));
+        File f = new File(uri.getPath());
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), f);
         return MultipartBody.Part.createFormData(name, f.getName(), requestFile);
     }
 
-    private void postVideo() {
-        //mBtn.setText("POSTING...");
-        //mBtn.setEnabled(false);
+    private void postVideo(Uri mSelectedImage, Uri mSelectedVideo) {
         MultipartBody.Part coverImagePart = getMultipartFromUri("cover_image", mSelectedImage);
         MultipartBody.Part videoPart = getMultipartFromUri("video", mSelectedVideo);
+        Log.d(TAG, "post");
         // TODO 9: post video & update buttons
-        Call<PostResponse> call = getMiniDouyinService().postVideo(mID+"",mNAME+"",coverImagePart,videoPart);
+        Call<PostResponse> call = getMiniDouyinService().postVideo(mID + "11", mNAME + "11", coverImagePart, videoPart);
         call.enqueue(new Callback<PostResponse>() {
             @Override
             public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
-                if(response.body() != null && response.body().getSuccess())
-                {
-                    //mBtn.setEnabled(true);
-                    //mBtn.setText(R.string.select_an_image);
+                if (response.body() != null && response.body().getSuccess()) {
+                    //Toast.makeText(VideoWFViewActivity.this,"uploaded",Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<PostResponse> call, Throwable t) {
-               // mBtn.setEnabled(true);
-               // mBtn.setText(R.string.select_an_image);
-               // Toast.makeText(MainActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(VideoWFViewActivity.this,"upload fail",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -349,16 +326,16 @@ public class VideoWFViewActivity extends AppCompatActivity {
         call.enqueue(new Callback<GetResponse>() {
             @Override
             public void onResponse(Call<GetResponse> call, Response<GetResponse> response) {
-                if(response.body() != null && response.body().getSuccess())
-                {
+                if (response.body() != null && response.body().getSuccess()) {
                     mVideos = response.body().getVideos();
                     initRecyclerView();
                     swiperereshlayout.setRefreshing(false);
                 }
             }
+
             @Override
             public void onFailure(Call<GetResponse> call, Throwable t) {
-                Toast.makeText(VideoWFViewActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(VideoWFViewActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

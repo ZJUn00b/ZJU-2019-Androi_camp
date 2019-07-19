@@ -142,5 +142,29 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
+
+        /**
+         * 监听游客登录按钮，点击登录后同时实现权限的请求
+         * 点击登陆按钮进入卡片视图，具有用户名等信息
+         */
+        findViewById(R.id.btn_guest_login).setOnClickListener(v -> {
+            Intent mIntent =  new Intent(MainActivity.this, VideoStreamActivity.class);
+            startActivity(mIntent);
+            mPermissionList.clear();
+            for (int i = 0; i < permissions.length; i++) {
+                if (ContextCompat.checkSelfPermission(MainActivity.this, permissions[i]) != PackageManager.PERMISSION_GRANTED) {
+                    mPermissionList.add(permissions[i]);
+                }
+            }
+            if (mPermissionList.isEmpty()) {//未授予的权限为空，表示都授予了
+
+            } else {//请求权限方法
+                String[] permissions = mPermissionList.toArray(new String[mPermissionList.size()]);//将List转为数组
+                ActivityCompat.requestPermissions(MainActivity.this, permissions, MY_PERMISSIONS_REQUEST_CALL_CAMERA);
+            }
+
+        });
+
     }
 }

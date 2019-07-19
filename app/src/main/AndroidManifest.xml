@@ -20,6 +20,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.percy.minidouyin.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
         <activity android:name=".view.ui.MainActivity" android:theme="@style/LoginStyle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,6 +39,11 @@
         <activity android:name=".view.ui.VideoWFViewActivity" android:theme="@style/LoginStyle"/>
         <activity android:name=".view.ui.VideoActivity"  android:theme="@style/LoginStyle"/>
         <activity android:name=".view.ui.CameraActivity" />
+        <activity android:name=".view.ui.VideoStreamActivity"/>
+        <activity android:name=".camera.CustomCameraActivity"/>
+        <activity android:name=".camera.TakePictureActivity"/>
+        <activity android:name=".camera.RecordVideoActivity"/>
+
     </application>
 
 </manifest>

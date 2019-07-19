@@ -1,14 +1,20 @@
 package com.percy.minidouyin.view.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,16 +25,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.bytedance.androidcamp.network.lib.util.ImageHelper;
+import com.bumptech.glide.Glide;
 import com.percy.minidouyin.R;
 import com.percy.minidouyin.api.IMiniDouyinService;
+import com.percy.minidouyin.camera.CustomCameraActivity;
 import com.percy.minidouyin.model.GetResponse;
 import com.percy.minidouyin.model.PostResponse;
 import com.percy.minidouyin.model.Video;
 import com.percy.minidouyin.util.ResourceUtils;
+import com.percy.minidouyin.util.Utils;
+import com.percy.minidouyin.util.saveImage;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -40,7 +50,18 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+
+/**
+ * 在此情况下使用的都为自定义相机
+ * */
 public class VideoWFViewActivity extends AppCompatActivity {
+    private static final int REQUEST_VIDEO_CAPTURE = 1;
+    private static final int REQUEST_EXTERNAL_CAMERA = 101;
+    private static final int REQUEST_CUSTOM_VIDEO_CAPTURE = 4;
+    String[] permissions = new String[] {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA
+    };
     private static final String TAG = "VideoWFViewActivity";
     public Uri mSelectedImage;
     private Uri mSelectedVideo;
@@ -57,7 +78,7 @@ public class VideoWFViewActivity extends AppCompatActivity {
     private SwipeRefreshLayout swiperereshlayout ;
 
     static private String thumbTextNum = (int)(1+Math.random()*(10-1+1))+10 +"";
-
+    private ImageButton imageButton ;
     Button mBtnRefresh;
 
     //------------------------登录界面后解决网路请求
@@ -150,6 +171,18 @@ public class VideoWFViewActivity extends AppCompatActivity {
                 fetchFeed();
             }
         });
+
+        imageButton = findViewById(R.id.F_btn);
+        imageButton.setOnClickListener(v->{
+            if (Utils.isPermissionsReady(this, permissions)) {
+                //todo 拉起自定义摄像机
+                startActivityForResult(new Intent(VideoWFViewActivity.this, CustomCameraActivity.class),REQUEST_CUSTOM_VIDEO_CAPTURE);
+            } else {
+                //todo 权限检查
+                Utils.reuqestPermissions(this,permissions,REQUEST_VIDEO_CAPTURE);
+                Utils.reuqestPermissions(this, permissions, REQUEST_EXTERNAL_CAMERA);
+            }
+        });
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -173,12 +206,12 @@ public class VideoWFViewActivity extends AppCompatActivity {
         }
 
         public void bind(final Activity activity, final Video video) {
-            //对item中的元素进行绑定
+            //对item中的元素进行绑定(用glide实现绑定)
             //封面
-            ImageHelper.displayWebImage(video.getImageUrl(), img);
+            Glide.with(img.getContext()).load(video.getImageUrl()).into(img);
             idText.setText(video.getStudentId());
             authorText.setText(video.getUserName());
-            updateText.setText(video.getupdatedAt());
+            updateText.setText(video.getupdatedAt().toLocaleString());
             //随机点赞数
 
             thumbText.setText(thumbTextNum);
@@ -250,14 +283,29 @@ public class VideoWFViewActivity extends AppCompatActivity {
                 + "]");
 
         if (resultCode == RESULT_OK && null != data) {
-            if (requestCode == PICK_IMAGE) {
-                mSelectedImage = data.getData();
-                Log.d(TAG, "selectedImage = " + mSelectedImage);
-               // mBtn.setText(R.string.select_a_video);
-            } else if (requestCode == PICK_VIDEO) {
-                mSelectedVideo = data.getData();
+            if (requestCode == REQUEST_CUSTOM_VIDEO_CAPTURE) {
+                Uri mVideoUri = data.getData();
+                mSelectedVideo = mVideoUri;
+
                 Log.d(TAG, "mSelectedVideo = " + mSelectedVideo);
                // mBtn.setText(R.string.post_it);
+                //todo 拿到了video之后马上自动生成封面
+
+                Bitmap bitmap = ThumbnailUtils.createVideoThumbnail( mSelectedVideo.getPath(), MediaStore.Video.Thumbnails.MINI_KIND);
+                //MediaMetadataRetriever media = new MediaMetadataRetriever();
+                // media.setDataSource(String.valueOf(mSelectedVideo));
+                //Log.d(TAG, "mSelectedImage = " + mSelectedImage);
+                //Bitmap bitmap  = media.getFrameAtTime(1, MediaMetadataRetriever.OPTION_CLOSEST_SYNC );
+                //Log.d(TAG, "mSelectedImage = " + mSelectedImage);
+                // imageView.setImageBitmap(bitmap);//对应的ImageView
+               Date date = new Date(System.currentTimeMillis());
+              if (bitmap!=null) Log.d(TAG, "mSelectedImage null = " + mSelectedImage);
+          Uri uri = saveImage.saveImage(bitmap, "minidouyin"+date+".jpeg",VideoWFViewActivity.this);
+                mSelectedImage = uri;
+                Log.d(TAG, "mSelectedImage = " + mSelectedImage);
+                postVideo();
+
+
             }
         }
     }

@@ -2,6 +2,8 @@ package com.percy.minidouyin.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class Video {
 
   @SerializedName("student_id")
@@ -13,7 +15,7 @@ public class Video {
   @SerializedName("video_url")
   private String videoUrl;
   @SerializedName("updatedAt")
-  private String updatedAt;
+  private Date updatedAt;
   @SerializedName("image_w")
   private int image_w;
   @SerializedName("image_h")
@@ -66,10 +68,10 @@ public class Video {
     return  image_w;
   }
 
-  public void setupdatedAt(String updatedAt) {
+  public void setupdatedAt(Date updatedAt) {
     this.updatedAt = updatedAt;
   }
-  public String getupdatedAt(){
+  public Date getupdatedAt(){
     return  updatedAt;
   }
 }
